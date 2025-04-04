@@ -1,0 +1,43 @@
+<!doctype html>
+<head>
+  <title>NAS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header>
+      <h1>📁 Alejandro's NAS</h1>
+      <a href="{{ url_for('logout') }}">Logout</a>
+  </header>
+  <div class="main">
+    <h2>Upload a file:</h2>
+    <form method="post" enctype="multipart/form-data">
+      <label for="file-upload" class="custom-file-upload">
+        Choose File
+      </label>
+      <span id="file-name">No file selected</span>
+      <input id="file-upload" type="file" name="file">
+      
+      <input type="submit" value="Upload" class="submit-button">
+    </form>
+    <h2>Search Files:</h2>
+    <input type="text" id="file-search" placeholder="Type to search..." style="margin: 0 0 20px 12px; padding: 10px; width: 100%; max-width: 400px; border-radius: 5px; border: none; background-color: #2e2e2e; color: white;">    
+    <div style="margin-bottom: 16px;">
+      <label for="sort-select" style="margin-right: 10px; color: white; margin-left: 12px;">Sort by:</label>
+      <select id="sort-select" style="padding: 6px 10px; border-radius: 5px; background-color: #2e2e2e; color: white; border: none;">
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+      </select>
+    </div>    
+    <h2>All Files:</h2>
+      <ul>
+        {% for filename in files %}
+        <li>
+          <a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a>
+          <form method="post" action="{{ url_for('delete_file', filename=filename) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete {{ filename }}?');">
+              <button class="delete-button" type="submit">🗑️ Delete</button>
+          </form>
+      </li>
+        {% endfor %}
+      </ul>
+  </div>
+</body>
